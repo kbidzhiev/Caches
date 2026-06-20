@@ -1,11 +1,17 @@
 cmake_minimum_required(VERSION 3.23)
 
-project(hello_world_proj)
+project(cache LANGUAGES CXX)
+
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 
-add_executable(hello)
+add_subdirectory(main)
+add_subdirectory(hello_world_lib)
 
-target_sources(hello
-  PRIVATE
-    src/main.cpp
-)
+
+include(CTest)
+add_subdirectory(tests)
+
+
