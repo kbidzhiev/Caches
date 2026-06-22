@@ -27,6 +27,9 @@ public:
     auto hit = hash_.find(key);
     if (hit == hash_.end()) { // not found
       if (full()) {
+        if (sz_ == 0) {
+          return false;
+        }
         hash_.erase(cache_.back().key_);
         cache_.pop_back();
       }
@@ -38,16 +41,17 @@ public:
 
     auto eltit = hit->second;
     eltit->freq_ += 1;
-    auto it = find_mru_node_for_frequency(eltit -> freq_);
+    auto it = find_mru_node_for_frequency(eltit->freq_);
     cache_.splice(it, cache_, eltit);
     return true;
   }
 
 private:
   ListIt find_mru_node_for_frequency(size_t freq) {
-    return std::lower_bound(
-        cache_.begin(), cache_.end(), freq,
-        [](const NodeInfo &node, size_t target) { return node.freq_ > target; });
+    return std::lower_bound(cache_.begin(), cache_.end(), freq,
+                            [](const NodeInfo &node, size_t target) {
+                              return node.freq_ > target;
+                            });
   }
 };
 

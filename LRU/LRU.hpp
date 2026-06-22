@@ -7,7 +7,7 @@ namespace cache {
 
 template <typename T, typename KeyT = int> class LRU_t {
   size_t sz_;
-  struct NodeInfo{
+  struct NodeInfo {
     KeyT key_;
     T page_;
   };
@@ -25,6 +25,9 @@ public:
     auto hit = hash_.find(key);
     if (hit == hash_.end()) { // not found
       if (full()) {
+        if (sz_ == 0) {
+          return false;
+        }
         hash_.erase(cache_.back().key_);
         cache_.pop_back();
       }
