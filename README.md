@@ -1,6 +1,16 @@
 # cpp_proj
 
+How to run
 
+```bash
+./build/main/main <<< "2 6 3 3 1 2 1 2" # cache_size Nelem elem1 elem2 ...
+```
+output is 
+```bash
+Cache type   N hits
+LRU          3
+LFU          1
+```
 
 
 
