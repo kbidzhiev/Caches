@@ -3,7 +3,7 @@
 How to run
 
 ```bash
-./build/main/main <<< "2 6 3 3 1 2 1 2"
+./build/main/main <<< "2 6 3 3 1 2 1 2" # cache_size Nelem elem1 elem2 ...
 ```
 output is 
 ```bash
