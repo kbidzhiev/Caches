@@ -5,7 +5,6 @@
 #include <iostream>
 #include <map>
 #include <string>
-#include <utility>
 
 int slow_get_page(int key) { return key; }
 

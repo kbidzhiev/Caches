@@ -87,12 +87,13 @@ TEST(LFU, eviction_LRU) {
 
 size_t nhits(const std::vector<int> &input) {
   size_t cache_sz = input[0];
-  int nelem = input[1];
+  size_t nelem = input[1];
+  std::vector<int> page_ids(input.begin() + 2, input.end());
+  assert(page_ids.size() == nelem);
 
   cache::LFU_t<page_t> lfu{cache_sz};
   size_t hits{};
-  for (int i = 0; i < nelem; ++i) {
-    int page_id = input[i + 2];
+  for (int page_id : page_ids) {
     if (lfu.lookup_update(page_id, slow_get_page))
       hits += 1;
   }
@@ -108,17 +109,18 @@ TEST(LFU, example_from_lecture) {
   // in the vector the first element is cache size, second is legth of input,
   // the rest is input
   std::vector<CacheHits> input_hits = {
-      {0, {0, 3, 1, 2, 3}},             // cache size 0 - 0 hits
-      {4, {2, 6, 1, 2, 1, 2, 1, 2}},    // xx1212 - 4 hits
-      {0, {3, 7, 1, 2, 3, 4, 5, 6, 7}}, // no repeats
+      {0, {0, 3, 1, 2, 3}},                             // cache size 0 - 0 hits
+      {4, {2, 6, 1, 2, 1, 2, 1, 2}},                    // xx1212 - 4 hits
+      {0, {3, 7, 1, 2, 3, 4, 5, 6, 7}},                 // no repeats
       {6, {4, 12, 1, 2, 3, 4, 1, 2, 5, 1, 2, 4, 3, 4}}, // xxxx12x124x4 - 6 hits
-      {2, {2, 6, 1, 2, 1, 3, 1, 2}},          // xx1x1x - 2 hits
-      {4, {3, 9, 1, 2, 3, 1, 2, 4, 1, 2, 3}}, // xxx12x12x - 4 hits
+      {2, {2, 6, 1, 2, 1, 3, 1, 2}},                    // xx1x1x - 2 hits
+      {4, {3, 9, 1, 2, 3, 1, 2, 4, 1, 2, 3}},           // xxx12x12x - 4 hits
       {7, {3, 12, 1, 2, 3, 1, 1, 2, 4, 1, 2, 5, 1, 2}}, // xxx112x12x12 - 7 hits
       {5, {4, 12, 1, 2, 3, 4, 1, 2, 1, 5, 1, 2, 3, 4}}, // xxxx121x123x - 5 hits
-      {7, {3, 11, 1, 2, 3, 1, 1, 2, 1, 4, 1, 2, 1}}, // xxx1121x121 - 7 hits
-      {3, {1, 5, 1, 1, 2, 2, 2}},                 // x1x22 - 3 hits
-      {9, {3, 12, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3}}}; // xxx123123123 - 9 hits
+      {7, {3, 11, 1, 2, 3, 1, 1, 2, 1, 4, 1, 2, 1}},    // xxx1121x121 - 7 hits
+      {3, {1, 5, 1, 1, 2, 2, 2}},                       // x1x22 - 3 hits
+      {9, {3, 12, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3}}, // xxx123123123 - 9 hits
+  };
 
   for (auto &[cache_hits, input_data] : input_hits) {
     EXPECT_EQ(nhits(input_data), cache_hits);
