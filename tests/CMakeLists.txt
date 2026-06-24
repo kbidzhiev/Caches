@@ -12,6 +12,7 @@ FetchContent_MakeAvailable(googletest)
 add_executable(caches_test
   LRU_test.cpp
   LFU_test.cpp
+  perfect_test.cpp
 )
 
 target_compile_options(caches_test
@@ -24,6 +25,7 @@ target_link_libraries(caches_test
   PRIVATE
     LRU
     LFU
+    perfect
     GTest::gtest_main
 )
 
