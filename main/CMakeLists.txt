@@ -14,4 +14,5 @@ target_link_libraries(main
   PRIVATE
     LRU 
     LFU
+    perfect
 )
