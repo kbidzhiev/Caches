@@ -12,6 +12,12 @@ LRU          3
 LFU          1
 ```
 
+### Benchmark
+input : uniform random integers [0: 100) with input size 100'000
+
+![statistics](./benchmark/cache_hit_statistics.png)
+
+
 
 
 # Tips
